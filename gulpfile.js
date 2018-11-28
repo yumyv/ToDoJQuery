@@ -60,6 +60,9 @@ gulp.task("img", () => {
 
 gulp.task("watch", () => {
     gulp.watch(paths.html, ['html']);
+    gulp.watch(paths.css, ['css']);
+    gulp.watch(paths.js, ['js']);
+    gulp.watch(paths.img, ['img']);
 });
 
-gulp.task("build", ["sync", "html", "css", "img", "js", "watch"]);
+gulp.task("build", ["sync", "html", "css", "js", "img", "watch"]);

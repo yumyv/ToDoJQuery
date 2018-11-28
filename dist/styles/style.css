@@ -11,6 +11,11 @@ body {
   flex-flow: row wrap;
   justify-content: flex-end
 }
+h1 {
+  align-self: center;
+  margin: 0;
+  font-size: 28px
+}
 .add {
   margin: 10px
 }
