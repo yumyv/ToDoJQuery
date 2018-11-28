@@ -1,12 +1,75 @@
 "use strict";
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 jQuery(document).ready(function () {
+  var Module =
+  /*#__PURE__*/
+  function () {
+    function Module(selector) {
+      _classCallCheck(this, Module);
+
+      this.selector = selector;
+    }
+
+    _createClass(Module, [{
+      key: "get",
+      value: function get(selector) {
+        return this.container.querySelector(selector);
+      }
+    }, {
+      key: "init",
+      value: function init() {
+        this.container = document.querySelector(this.selector);
+        this.loadComponents();
+        this.bindEvents();
+        this.onCreate();
+      }
+    }]);
+
+    return Module;
+  }();
+
+  var Page =
+  /*#__PURE__*/
+  function () {
+    function Page() {
+      _classCallCheck(this, Page);
+
+      this.modules = [];
+    }
+
+    _createClass(Page, [{
+      key: "registerModule",
+      value: function registerModule(module) {
+        this.modules.push(module);
+      }
+    }, {
+      key: "init",
+      value: function init() {
+        this.modules.forEach(function (m) {
+          return m.init();
+        });
+      }
+    }, {
+      key: "start",
+      value: function start() {
+        var _this = this;
+
+        window.addEventListener("load", function () {
+          return _this.init();
+        });
+      }
+    }]);
+
+    return Page;
+  }(); /////////////////////
+
+
   var $addNote = $(".addNote");
   var $delNote = $(".delNote");
   var $viewNote = $(".viewNote");
@@ -52,7 +115,7 @@ jQuery(document).ready(function () {
     }, {
       key: "addNoteOk",
       value: function addNoteOk() {
-        var _this = this;
+        var _this2 = this;
 
         var $addOk = $(".addOk");
         $addOk.on("click", function () {
@@ -62,7 +125,7 @@ jQuery(document).ready(function () {
           if ($noteName && $noteDesc !== undefined) {
             var note = new Note($noteName, $noteDesc);
 
-            _this.addNote(note);
+            _this2.addNote(note);
 
             $(".noteName").val("");
             $("#desc").val("");
@@ -89,5 +152,9 @@ jQuery(document).ready(function () {
     return Notes;
   }();
 
-  var notes = new Notes();
+  var notes = new Notes(); ////////////////
+
+  var page = new Page();
+  page.registerModule(new NotesModule(".todo"));
+  page.start();
 });

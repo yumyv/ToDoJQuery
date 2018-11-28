@@ -1,21 +1,27 @@
 body {
+    font-family: Timeburner, Arial, sans-serif;
     margin: 0;
-    background: #bbdefb;
+    background: #e1f5fe;
 }
 
 .todo {
+    padding: 10px;
+    border: 1px solid white;
+    border-radius: 10px;
+    background: #1976d2;
     position: relative;
     color: white;
     width: 1200px;
-    margin: 0 auto;
+    margin: 10px auto;
     display: flex;
     flex-flow: row wrap;
     justify-content: flex-end;
 }
 
-h1 {
+.todo h2 {
+    font-weight: bold;
     align-self: center;
-    margin: 0;
+    margin: 0 10px;
     font-size: 28px;
 }
 
@@ -30,7 +36,7 @@ h1 {
 }
 
 .note {
-    margin: 0;
+    margin: 10px 0;
     padding: 20px;
     border: 1px solid white;
     border-radius: 10px;
@@ -41,7 +47,7 @@ h1 {
     justify-content: space-between;
 }
 
-.note h2 {
+.note h3 {
 
     margin: 0;
     font-size: 30px;
@@ -141,7 +147,7 @@ h1 {
     user-select: none;
 }
 
-.viewNote .viewContainer h2 {
+.viewNote .viewContainer h3 {
     margin: 0;
     text-align: center;
 }

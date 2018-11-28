@@ -1,5 +1,50 @@
 jQuery(document).ready(function () {
-    let $addNote = $(".addNote");
+    class Module {
+        constructor(selector) {
+            this.selector = selector;
+        }
+
+        get(selector) {
+            return this.container.querySelector(selector);
+        }
+
+        init() {
+            this.container = document.querySelector(this.selector);
+        }
+    }
+
+    class Page {
+        constructor() {
+            this.modules = [];
+        }
+
+        registerModule(module) {
+            this.modules.push(module);
+        }
+
+        init() {
+            this.modules.forEach(m => m.init())
+        }
+
+        start() {
+            window.addEventListener("load", () => this.init());
+        }
+    }
+
+//--------------------------- ToDoApp ----------------------
+    class Note {
+        constructor(name, description) {
+            this.name = name;
+            this.description = description;
+        }
+
+        asElement() {
+            let note =
+        }
+    }
+
+
+    /*let $addNote = $(".addNote");
     let $delNote = $(".delNote");
     let $viewNote = $(".viewNote");
 
@@ -62,5 +107,9 @@ jQuery(document).ready(function () {
     }
 
     let notes = new Notes();
-
+*/
+    ////////////////
+    let page = new Page();
+    page.registerModule(new NotesModule(".todo"));
+    page.start();
 });

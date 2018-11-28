@@ -9,7 +9,8 @@ let paths = {
     html: "./src/*.html",
     css: "./src/styles/*.css",
     js: "./src/scripts/*.js",
-    img: "./src/images/*"
+    img: "./src/images/*",
+    fonts: "./src/fonts/*"
 };
 
 gulp.task("sync", () => {
@@ -58,11 +59,18 @@ gulp.task("img", () => {
         .pipe(browserSync.reload({stream: true}))
 });
 
+gulp.task("fonts", () => {
+    gulp.src(paths.fonts)
+        .pipe(gulp.dest("./dist/fonts"))
+        .pipe(browserSync.reload({stream: true}))
+});
+
 gulp.task("watch", () => {
     gulp.watch(paths.html, ['html']);
     gulp.watch(paths.css, ['css']);
     gulp.watch(paths.js, ['js']);
     gulp.watch(paths.img, ['img']);
+    gulp.watch(paths.fonts, ['fonts']);
 });
 
-gulp.task("build", ["sync", "html", "css", "js", "img", "watch"]);
+gulp.task("build", ["sync", "html", "css", "js", "img", "fonts", "watch"]);
