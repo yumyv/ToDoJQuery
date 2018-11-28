@@ -1,0 +1,22 @@
+{
+  "name": "todojquery",
+  "version": "1.0.0",
+  "description": "jquery practice",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yumyv/ToDoJQuery.git"
+  },
+  "author": "Yurii",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yumyv/ToDoJQuery/issues"
+  },
+  "homepage": "https://github.com/yumyv/ToDoJQuery#readme",
+  "devDependencies": {
+    "jquery": "^3.3.1"
+  }
+}
