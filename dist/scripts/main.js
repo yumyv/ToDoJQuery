@@ -7,87 +7,43 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 jQuery(document).ready(function () {
-  var Module =
+  var Note =
   /*#__PURE__*/
   function () {
-    function Module(selector) {
-      _classCallCheck(this, Module);
+    function Note(noteName, description, notesSelector) {
+      _classCallCheck(this, Note);
 
-      this.selector = selector;
+      this.name = noteName;
+      this.description = description;
+      this.notesSelector = notesSelector;
     }
 
-    _createClass(Module, [{
-      key: "get",
-      value: function get(selector) {
-        return this.container.querySelector(selector);
-      }
-    }, {
-      key: "init",
-      value: function init() {
-        this.container = document.querySelector(this.selector);
-        this.loadComponents();
-        this.bindEvents();
-        this.onCreate();
+    _createClass(Note, [{
+      key: "asElement",
+      value: function asElement() {
+        var $note = $("\n                <figure class=\"note\">\n                    <h3>".concat(this.name, "</h3>\n                    <div class=\"noteContainer\">\n                        <div class=\"view\">\n                            <img src=\"images/eye.png\" alt=\"eye\">\n                        </div>\n                        <div class=\"delete\">\n                            <img src=\"images/del.png\" alt=\"del\">\n                        </div>\n                    </div>\n                </figure>\n            "));
+        var $notesSelector = $(this.notesSelector);
+        $notesSelector.append($note);
+        return $notesSelector;
       }
     }]);
 
-    return Module;
-  }();
-
-  var Page =
-  /*#__PURE__*/
-  function () {
-    function Page() {
-      _classCallCheck(this, Page);
-
-      this.modules = [];
-    }
-
-    _createClass(Page, [{
-      key: "registerModule",
-      value: function registerModule(module) {
-        this.modules.push(module);
-      }
-    }, {
-      key: "init",
-      value: function init() {
-        this.modules.forEach(function (m) {
-          return m.init();
-        });
-      }
-    }, {
-      key: "start",
-      value: function start() {
-        var _this = this;
-
-        window.addEventListener("load", function () {
-          return _this.init();
-        });
-      }
-    }]);
-
-    return Page;
-  }(); /////////////////////
+    return Note;
+  }(); //----------------
 
 
   var $addNote = $(".addNote");
   var $delNote = $(".delNote");
   var $viewNote = $(".viewNote");
 
-  var Note = function Note(name, description) {
-    _classCallCheck(this, Note);
-
-    this.name = name;
-    this.description = description;
-  };
-
   var Notes =
   /*#__PURE__*/
   function () {
-    function Notes() {
+    function Notes(selector) {
       _classCallCheck(this, Notes);
 
       this.notes = [];
+      this.selector = selector;
       this.init();
     }
 
@@ -115,7 +71,7 @@ jQuery(document).ready(function () {
     }, {
       key: "addNoteOk",
       value: function addNoteOk() {
-        var _this2 = this;
+        var _this = this;
 
         var $addOk = $(".addOk");
         $addOk.on("click", function () {
@@ -123,10 +79,11 @@ jQuery(document).ready(function () {
           var $noteDesc = $("#desc").val();
 
           if ($noteName && $noteDesc !== undefined) {
-            var note = new Note($noteName, $noteDesc);
+            var note = new Note($noteName, $noteDesc, _this.selector);
 
-            _this2.addNote(note);
+            _this.addNote(note);
 
+            note.asElement();
             $(".noteName").val("");
             $("#desc").val("");
           }
@@ -152,9 +109,5 @@ jQuery(document).ready(function () {
     return Notes;
   }();
 
-  var notes = new Notes(); ////////////////
-
-  var page = new Page();
-  page.registerModule(new NotesModule(".todo"));
-  page.start();
+  var notes = new Notes(".todo");
 });

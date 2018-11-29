@@ -1,14 +1,14 @@
 @font-face {
   font-family: Timeburner;
-  src: url(../fonts/Timeburner/timeburnernormal.ttf);
-  src: url(../fonts/Timeburner/timeburnernormal.ttf) format("truetype");
+  src: url(../fonts/timeburnernormal.ttf);
+  src: url(../fonts/timeburnernormal.ttf) format("truetype");
   font-weight: 400;
   font-style: normal
 }
 @font-face {
   font-family: Timeburner;
-  src: url(../fonts/Timeburner/timeburnerbold.ttf);
-  src: url(../fonts/Timeburner/timeburnerbold.ttf) format("truetype");
+  src: url(../fonts/timeburnerbold.ttf);
+  src: url(../fonts/timeburnerbold.ttf) format("truetype");
   font-weight: 700;
   font-style: normal
 }

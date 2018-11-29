@@ -1,63 +1,39 @@
 jQuery(document).ready(function () {
-    class Module {
-        constructor(selector) {
-            this.selector = selector;
-        }
-
-        get(selector) {
-            return this.container.querySelector(selector);
-        }
-
-        init() {
-            this.container = document.querySelector(this.selector);
-        }
-    }
-
-    class Page {
-        constructor() {
-            this.modules = [];
-        }
-
-        registerModule(module) {
-            this.modules.push(module);
-        }
-
-        init() {
-            this.modules.forEach(m => m.init())
-        }
-
-        start() {
-            window.addEventListener("load", () => this.init());
-        }
-    }
-
-//--------------------------- ToDoApp ----------------------
     class Note {
-        constructor(name, description) {
-            this.name = name;
+        constructor(noteName, description, notesSelector) {
+            this.name = noteName;
             this.description = description;
+            this.notesSelector = notesSelector;
         }
-
         asElement() {
-            let note =
+            let $note = $(`
+                <figure class="note">
+                    <h3>${this.name}</h3>
+                    <div class="noteContainer">
+                        <div class="view">
+                            <img src="images/eye.png" alt="eye">
+                        </div>
+                        <div class="delete">
+                            <img src="images/del.png" alt="del">
+                        </div>
+                    </div>
+                </figure>
+            `);
+            let $notesSelector = $(this.notesSelector);
+            $notesSelector.append($note);
+            return $notesSelector;
         }
     }
 
-
-    /*let $addNote = $(".addNote");
+//----------------
+    let $addNote = $(".addNote");
     let $delNote = $(".delNote");
     let $viewNote = $(".viewNote");
 
-    class Note {
-        constructor(name, description) {
-            this.name = name;
-            this.description = description;
-        }
-    }
-
     class Notes {
-        constructor() {
+        constructor(selector) {
             this.notes = [];
+            this.selector = selector;
             this.init();
         }
 
@@ -85,8 +61,9 @@ jQuery(document).ready(function () {
                 let $noteName = $(".noteName").val();
                 let $noteDesc = $("#desc").val();
                 if ($noteName && $noteDesc !== undefined) {
-                    let note = new Note($noteName, $noteDesc);
+                    let note = new Note($noteName, $noteDesc, this.selector);
                     this.addNote(note);
+                    note.asElement();
                     $(".noteName").val("");
                     $("#desc").val("");
                 }
@@ -106,10 +83,5 @@ jQuery(document).ready(function () {
         }
     }
 
-    let notes = new Notes();
-*/
-    ////////////////
-    let page = new Page();
-    page.registerModule(new NotesModule(".todo"));
-    page.start();
+    let notes = new Notes(".todo");
 });
