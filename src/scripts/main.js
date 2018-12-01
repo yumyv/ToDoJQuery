@@ -5,6 +5,7 @@ jQuery(document).ready(function () {
             this.description = description;
             this.notesSelector = notesSelector;
         }
+
         asElement() {
             let $note = $(`
                 <figure class="note">
@@ -25,63 +26,73 @@ jQuery(document).ready(function () {
         }
     }
 
-//----------------
-    let $addNote = $(".addNote");
-    let $delNote = $(".delNote");
-    let $viewNote = $(".viewNote");
 
-    class Notes {
+    class Module {
         constructor(selector) {
             this.notes = [];
             this.selector = selector;
-            this.init();
-        }
-
-        init() {
-            this.addNote();
-            this.addButton();
-            this.addNoteOk();
-            this.addNoteCancel();
         }
 
         addNote(note) {
             this.notes.push(note);
         }
 
-        addButton() {
-            let $addBtn = $(".add");
-            $addBtn.on("click", function () {
-                $addNote.show(500);
+        remove(index) {
+            this.notes.splice(index, 1);
+        }
+    }
+
+
+    class NotesModule extends Module {
+        constructor(selector) {
+            super(selector);
+            this.addNoteSelector = $(".addNote");
+            this.addBtnSelector = $(".add");
+            this.noteNameSelector = $(".noteName");
+            this.descSelector = $("#desc");
+            this.addOkBtn = $(".addOk");
+            this.addCancelBtn = $(".addCancel");
+            this.init();
+        }
+
+        init() {
+            this.addButton(this.addNoteSelector, this.addBtnSelector);
+            this.addNoteOk(this.addNoteSelector, this.noteNameSelector, this.descSelector, this.addOkBtn);
+            this.addNoteCancel(this.addNoteSelector, this.noteNameSelector, this.descSelector, this.addCancelBtn);
+        }
+
+        addButton(selector, btn) {
+            btn.on("click", function () {
+                selector.show(500);
             });
         }
 
-        addNoteOk() {
-            let $addOk = $(".addOk");
-            $addOk.on("click", () => {
-                let $noteName = $(".noteName").val();
-                let $noteDesc = $("#desc").val();
+        addNoteOk(addNoteSelector, noteNameSelector, descSelector, btn) {
+            btn.on("click", () => {
+                let $noteName = noteNameSelector.val();
+                let $noteDesc = descSelector.val();
                 if ($noteName && $noteDesc !== undefined) {
                     let note = new Note($noteName, $noteDesc, this.selector);
                     this.addNote(note);
                     note.asElement();
-                    $(".noteName").val("");
-                    $("#desc").val("");
+                    noteNameSelector.val("");
+                    descSelector.val("");
                 }
-                $addNote.hide(500);
+                addNoteSelector.hide(500);
             });
         }
 
-        addNoteCancel() {
-            let $addCancel = $(".addCancel");
-            $addCancel.on("click", function () {
-                if (($(".noteName").val() && $("#desc").val()) !== undefined) {
-                    $(".noteName").val("");
-                    $("#desc").val("");
+        addNoteCancel(addNoteSelector, noteNameSelector, descSelector, btn) {
+            btn.on("click", function () {
+                if ((noteNameSelector.val() && descSelector.val()) !== undefined) {
+                    noteNameSelector.val("");
+                    descSelector.val("");
                 }
-                $addNote.hide(500);
+                addNoteSelector.hide(500);
             })
         }
     }
 
-    let notes = new Notes(".todo");
+
+    let notes = new NotesModule(".todo");
 });

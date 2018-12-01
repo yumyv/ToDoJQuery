@@ -1,5 +1,17 @@
 "use strict";
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -29,85 +41,108 @@ jQuery(document).ready(function () {
     }]);
 
     return Note;
-  }(); //----------------
+  }();
 
-
-  var $addNote = $(".addNote");
-  var $delNote = $(".delNote");
-  var $viewNote = $(".viewNote");
-
-  var Notes =
+  var Module =
   /*#__PURE__*/
   function () {
-    function Notes(selector) {
-      _classCallCheck(this, Notes);
+    function Module(selector) {
+      _classCallCheck(this, Module);
 
       this.notes = [];
       this.selector = selector;
-      this.init();
     }
 
-    _createClass(Notes, [{
-      key: "init",
-      value: function init() {
-        this.addNote();
-        this.addButton();
-        this.addNoteOk();
-        this.addNoteCancel();
-      }
-    }, {
+    _createClass(Module, [{
       key: "addNote",
       value: function addNote(note) {
         this.notes.push(note);
       }
     }, {
+      key: "remove",
+      value: function remove(index) {
+        this.notes.splice(index, 1);
+      }
+    }]);
+
+    return Module;
+  }();
+
+  var NotesModule =
+  /*#__PURE__*/
+  function (_Module) {
+    _inherits(NotesModule, _Module);
+
+    function NotesModule(selector) {
+      var _this;
+
+      _classCallCheck(this, NotesModule);
+
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(NotesModule).call(this, selector));
+      _this.addNoteSelector = $(".addNote");
+      _this.addBtnSelector = $(".add");
+      _this.noteNameSelector = $(".noteName");
+      _this.descSelector = $("#desc");
+      _this.addOkBtn = $(".addOk");
+      _this.addCancelBtn = $(".addCancel");
+
+      _this.init();
+
+      return _this;
+    }
+
+    _createClass(NotesModule, [{
+      key: "init",
+      value: function init() {
+        this.addButton(this.addNoteSelector, this.addBtnSelector);
+        this.addNoteOk(this.addNoteSelector, this.noteNameSelector, this.descSelector, this.addOkBtn);
+        this.addNoteCancel(this.addNoteSelector, this.noteNameSelector, this.descSelector, this.addCancelBtn);
+      }
+    }, {
       key: "addButton",
-      value: function addButton() {
-        var $addBtn = $(".add");
-        $addBtn.on("click", function () {
-          $addNote.show(500);
+      value: function addButton(selector, btn) {
+        btn.on("click", function () {
+          selector.show(500);
         });
       }
     }, {
       key: "addNoteOk",
-      value: function addNoteOk() {
-        var _this = this;
+      value: function addNoteOk(addNoteSelector, noteNameSelector, descSelector, btn) {
+        var _this2 = this;
 
-        var $addOk = $(".addOk");
-        $addOk.on("click", function () {
-          var $noteName = $(".noteName").val();
-          var $noteDesc = $("#desc").val();
+        btn.on("click", function () {
+          var $noteName = noteNameSelector.val();
+          var $noteDesc = descSelector.val();
 
           if ($noteName && $noteDesc !== undefined) {
-            var note = new Note($noteName, $noteDesc, _this.selector);
+            var note = new Note($noteName, $noteDesc, _this2.selector);
 
-            _this.addNote(note);
+            _this2.addNote(note);
 
             note.asElement();
-            $(".noteName").val("");
-            $("#desc").val("");
+            noteNameSelector.val("");
+            descSelector.val("");
           }
 
-          $addNote.hide(500);
+          addNoteSelector.hide(500);
         });
       }
     }, {
       key: "addNoteCancel",
-      value: function addNoteCancel() {
-        var $addCancel = $(".addCancel");
-        $addCancel.on("click", function () {
-          if (($(".noteName").val() && $("#desc").val()) !== undefined) {
-            $(".noteName").val("");
-            $("#desc").val("");
+      value: function addNoteCancel(addNoteSelector, noteNameSelector, descSelector, btn) {
+        btn.on("click", function () {
+          if ((noteNameSelector.val() && descSelector.val()) !== undefined) {
+            noteNameSelector.val("");
+            descSelector.val("");
           }
 
-          $addNote.hide(500);
+          addNoteSelector.hide(500);
         });
       }
     }]);
 
-    return Notes;
-  }();
+    return NotesModule;
+  }(Module);
 
-  var notes = new Notes(".todo");
+  var notes = new NotesModule(".todo");
 });
