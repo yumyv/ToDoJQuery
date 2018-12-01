@@ -1,9 +1,9 @@
 jQuery(document).ready(function () {
     class Note {
-        constructor(noteName, description, notesSelector) {
+        constructor(noteName, description, notesSelectorList) {
             this.name = noteName;
             this.description = description;
-            this.notesSelector = notesSelector;
+            this.notesSelectorList = notesSelectorList;
         }
 
         asElement() {
@@ -20,17 +20,17 @@ jQuery(document).ready(function () {
                     </div>
                 </figure>
             `);
-            let $notesSelector = $(this.notesSelector);
-            $notesSelector.append($note);
-            return $notesSelector;
+            let $notesSelectorList = $(this.notesSelectorList);
+            $notesSelectorList.append($note);
+            return $notesSelectorList;
         }
     }
 
 
     class Module {
-        constructor(selector) {
+        constructor(selectorList) {
             this.notes = [];
-            this.selector = selector;
+            this.selectorLIst = selectorList;
         }
 
         addNote(note) {
@@ -44,8 +44,8 @@ jQuery(document).ready(function () {
 
 
     class NotesModule extends Module {
-        constructor(selector) {
-            super(selector);
+        constructor(selectorList) {
+            super(selectorList);
             this.addNoteSelector = $(".addNote");
             this.addBtnSelector = $(".add");
             this.noteNameSelector = $(".noteName");
@@ -72,11 +72,12 @@ jQuery(document).ready(function () {
                 let $noteName = noteNameSelector.val();
                 let $noteDesc = descSelector.val();
                 if ($noteName && $noteDesc !== undefined) {
-                    let note = new Note($noteName, $noteDesc, this.selector);
+                    let note = new Note($noteName, $noteDesc, this.selectorLIst);
                     this.addNote(note);
                     note.asElement();
                     noteNameSelector.val("");
                     descSelector.val("");
+                    this.updateView();
                 }
                 addNoteSelector.hide(500);
             });
@@ -91,8 +92,27 @@ jQuery(document).ready(function () {
                 addNoteSelector.hide(500);
             })
         }
+
+        viewNote() {
+            let $viewBtn = $(".view");
+            $viewBtn.on("click", () =>{
+                let $viewNote = $(".viewNote");
+                $viewNote.show(500);
+            })
+        }
+
+        delNote() {
+            $(".delete").on("click", () =>{
+                alert("delete")
+            })
+        }
+
+        updateView(){
+            this.viewNote();
+            this.delNote();
+        }
     }
 
 
-    let notes = new NotesModule(".todo");
+    let notes = new NotesModule(".notesList");
 });

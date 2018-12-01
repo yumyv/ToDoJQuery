@@ -39,7 +39,8 @@ body {
   background: #2196f3;
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-between
+  justify-content: space-between;
+  box-sizing: border-box
 }
 .note h3 {
   margin: 0;
@@ -131,4 +132,7 @@ body {
 }
 .viewNote p {
   text-align: justify
+}
+.notesList {
+  width: 100%
 }

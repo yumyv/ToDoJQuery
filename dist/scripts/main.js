@@ -22,21 +22,21 @@ jQuery(document).ready(function () {
   var Note =
   /*#__PURE__*/
   function () {
-    function Note(noteName, description, notesSelector) {
+    function Note(noteName, description, notesSelectorList) {
       _classCallCheck(this, Note);
 
       this.name = noteName;
       this.description = description;
-      this.notesSelector = notesSelector;
+      this.notesSelectorList = notesSelectorList;
     }
 
     _createClass(Note, [{
       key: "asElement",
       value: function asElement() {
         var $note = $("\n                <figure class=\"note\">\n                    <h3>".concat(this.name, "</h3>\n                    <div class=\"noteContainer\">\n                        <div class=\"view\">\n                            <img src=\"images/eye.png\" alt=\"eye\">\n                        </div>\n                        <div class=\"delete\">\n                            <img src=\"images/del.png\" alt=\"del\">\n                        </div>\n                    </div>\n                </figure>\n            "));
-        var $notesSelector = $(this.notesSelector);
-        $notesSelector.append($note);
-        return $notesSelector;
+        var $notesSelectorList = $(this.notesSelectorList);
+        $notesSelectorList.append($note);
+        return $notesSelectorList;
       }
     }]);
 
@@ -46,11 +46,11 @@ jQuery(document).ready(function () {
   var Module =
   /*#__PURE__*/
   function () {
-    function Module(selector) {
+    function Module(selectorList) {
       _classCallCheck(this, Module);
 
       this.notes = [];
-      this.selector = selector;
+      this.selectorLIst = selectorList;
     }
 
     _createClass(Module, [{
@@ -73,12 +73,12 @@ jQuery(document).ready(function () {
   function (_Module) {
     _inherits(NotesModule, _Module);
 
-    function NotesModule(selector) {
+    function NotesModule(selectorList) {
       var _this;
 
       _classCallCheck(this, NotesModule);
 
-      _this = _possibleConstructorReturn(this, _getPrototypeOf(NotesModule).call(this, selector));
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(NotesModule).call(this, selectorList));
       _this.addNoteSelector = $(".addNote");
       _this.addBtnSelector = $(".add");
       _this.noteNameSelector = $(".noteName");
@@ -115,13 +115,15 @@ jQuery(document).ready(function () {
           var $noteDesc = descSelector.val();
 
           if ($noteName && $noteDesc !== undefined) {
-            var note = new Note($noteName, $noteDesc, _this2.selector);
+            var note = new Note($noteName, $noteDesc, _this2.selectorLIst);
 
             _this2.addNote(note);
 
             note.asElement();
             noteNameSelector.val("");
             descSelector.val("");
+
+            _this2.updateView();
           }
 
           addNoteSelector.hide(500);
@@ -139,10 +141,32 @@ jQuery(document).ready(function () {
           addNoteSelector.hide(500);
         });
       }
+    }, {
+      key: "viewNote",
+      value: function viewNote() {
+        var $viewBtn = $(".view");
+        $viewBtn.on("click", function () {
+          var $viewNote = $(".viewNote");
+          $viewNote.show(500);
+        });
+      }
+    }, {
+      key: "delNote",
+      value: function delNote() {
+        $(".delete").on("click", function () {
+          alert("delete");
+        });
+      }
+    }, {
+      key: "updateView",
+      value: function updateView() {
+        this.viewNote();
+        this.delNote();
+      }
     }]);
 
     return NotesModule;
   }(Module);
 
-  var notes = new NotesModule(".todo");
+  var notes = new NotesModule(".notesList");
 });
