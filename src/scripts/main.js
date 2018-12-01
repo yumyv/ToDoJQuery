@@ -55,6 +55,12 @@ jQuery(document).ready(function () {
             this.init();
         }
 
+        loadedLater() {
+            this.viewNote($(".view"));
+            this.delNote($(".delete"));
+
+        }
+
         init() {
             this.addButton(this.addNoteSelector, this.addBtnSelector);
             this.addNoteOk(this.addNoteSelector, this.noteNameSelector, this.descSelector, this.addOkBtn);
@@ -93,23 +99,22 @@ jQuery(document).ready(function () {
             })
         }
 
-        viewNote() {
-            let $viewBtn = $(".view");
-            $viewBtn.on("click", () =>{
-                let $viewNote = $(".viewNote");
-                $viewNote.show(500);
+        viewNote(btn) {
+            btn.on("click", (e) =>{
+                if(e.target.closest(".note")) alert(this.notes[]);
+                //let $viewNote = $(".viewNote");
+                //$viewNote.show(500);
             })
         }
 
-        delNote() {
-            $(".delete").on("click", () =>{
+        delNote(btn) {
+            btn.on("click", () =>{
                 alert("delete")
             })
         }
 
         updateView(){
-            this.viewNote();
-            this.delNote();
+            this.loadedLater();
         }
     }
 

@@ -92,6 +92,12 @@ jQuery(document).ready(function () {
     }
 
     _createClass(NotesModule, [{
+      key: "loadedLater",
+      value: function loadedLater() {
+        this.viewNote($(".view"));
+        this.delNote($(".delete"));
+      }
+    }, {
       key: "init",
       value: function init() {
         this.addButton(this.addNoteSelector, this.addBtnSelector);
@@ -143,25 +149,25 @@ jQuery(document).ready(function () {
       }
     }, {
       key: "viewNote",
-      value: function viewNote() {
-        var $viewBtn = $(".view");
-        $viewBtn.on("click", function () {
-          var $viewNote = $(".viewNote");
-          $viewNote.show(500);
+      value: function viewNote(btn) {
+        var _this3 = this;
+
+        btn.on("click", function (e) {
+          if (e.target.closest(".note")) alert(_this3.call(Note.name)); //let $viewNote = $(".viewNote");
+          //$viewNote.show(500);
         });
       }
     }, {
       key: "delNote",
-      value: function delNote() {
-        $(".delete").on("click", function () {
+      value: function delNote(btn) {
+        btn.on("click", function () {
           alert("delete");
         });
       }
     }, {
       key: "updateView",
       value: function updateView() {
-        this.viewNote();
-        this.delNote();
+        this.loadedLater();
       }
     }]);
 
