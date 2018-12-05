@@ -22,19 +22,22 @@ jQuery(document).ready(function () {
             `);
             let $notesSelectorList = $(this.notesSelectorList);
             $notesSelectorList.append($note);
-            return $notesSelectorList;
+            return $note;
         }
     }
 
 
     class Module {
-        constructor(selectorList) {
+        constructor() {
             this.notes = [];
-            this.selectorLIst = selectorList;
         }
 
         addNote(note) {
             this.notes.push(note);
+        }
+
+        getAll() {
+            return this.notes;
         }
 
         remove(index) {
@@ -44,8 +47,9 @@ jQuery(document).ready(function () {
 
 
     class NotesModule extends Module {
-        constructor(selectorList) {
-            super(selectorList);
+        constructor() {
+            super();
+            this.selectorList = $(".notesList");
             this.addNoteSelector = $(".addNote");
             this.addBtnSelector = $(".add");
             this.noteNameSelector = $(".noteName");
@@ -78,7 +82,7 @@ jQuery(document).ready(function () {
                 let $noteName = noteNameSelector.val();
                 let $noteDesc = descSelector.val();
                 if ($noteName && $noteDesc !== undefined) {
-                    let note = new Note($noteName, $noteDesc, this.selectorLIst);
+                    let note = new Note($noteName, $noteDesc, this.selectorList);
                     this.addNote(note);
                     note.asElement();
                     noteNameSelector.val("");
@@ -101,23 +105,49 @@ jQuery(document).ready(function () {
 
         viewNote(btn) {
             btn.on("click", (e) =>{
-                if(e.target.closest(".note")) alert(this.notes[]);
-                //let $viewNote = $(".viewNote");
-                //$viewNote.show(500);
+                let elem = e.target.closest(".note").getAttribute("data-index");
+                    let $viewNote = $(`
+                        <div class="viewNote noteWindow">
+                            <div class="viewContainer">
+                                <h3>${this.notes[elem].name}</h3>
+                                <div class="viewExitButton">
+                                    <img src="images/exit.png" alt="exit">
+                                </div>
+                            </div>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum doloremque eius enim error excepturi
+                            </p>
+                        </div>
+                    `);
+                    $viewNote.show(500);
             })
         }
 
         delNote(btn) {
-            btn.on("click", () =>{
-                alert("delete")
+            btn.on("click", (e) =>{
+                if(e.target.closest(".note")) {
+                    this.removeNote(e.target.closest(".note").getAttribute("data-index"));
+                }
             })
         }
 
         updateView(){
+            this.selectorList.html("");
+            this.getAll().forEach((note, i) => {
+                let noteElem = note.asElement();
+                noteElem.attr("data-index", i);
+                this.selectorList.append(noteElem);
+            });
             this.loadedLater();
+        }
+
+        removeNote(index) {
+            this.remove(index);
+            this.updateView();
         }
     }
 
 
-    let notes = new NotesModule(".notesList");
+    let notes = new NotesModule();
+
 });

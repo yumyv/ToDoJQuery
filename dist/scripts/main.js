@@ -36,7 +36,7 @@ jQuery(document).ready(function () {
         var $note = $("\n                <figure class=\"note\">\n                    <h3>".concat(this.name, "</h3>\n                    <div class=\"noteContainer\">\n                        <div class=\"view\">\n                            <img src=\"images/eye.png\" alt=\"eye\">\n                        </div>\n                        <div class=\"delete\">\n                            <img src=\"images/del.png\" alt=\"del\">\n                        </div>\n                    </div>\n                </figure>\n            "));
         var $notesSelectorList = $(this.notesSelectorList);
         $notesSelectorList.append($note);
-        return $notesSelectorList;
+        return $note;
       }
     }]);
 
@@ -46,17 +46,21 @@ jQuery(document).ready(function () {
   var Module =
   /*#__PURE__*/
   function () {
-    function Module(selectorList) {
+    function Module() {
       _classCallCheck(this, Module);
 
       this.notes = [];
-      this.selectorLIst = selectorList;
     }
 
     _createClass(Module, [{
       key: "addNote",
       value: function addNote(note) {
         this.notes.push(note);
+      }
+    }, {
+      key: "getAll",
+      value: function getAll() {
+        return this.notes;
       }
     }, {
       key: "remove",
@@ -73,12 +77,13 @@ jQuery(document).ready(function () {
   function (_Module) {
     _inherits(NotesModule, _Module);
 
-    function NotesModule(selectorList) {
+    function NotesModule() {
       var _this;
 
       _classCallCheck(this, NotesModule);
 
-      _this = _possibleConstructorReturn(this, _getPrototypeOf(NotesModule).call(this, selectorList));
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(NotesModule).call(this));
+      _this.selectorList = $(".notesList");
       _this.addNoteSelector = $(".addNote");
       _this.addBtnSelector = $(".add");
       _this.noteNameSelector = $(".noteName");
@@ -121,7 +126,7 @@ jQuery(document).ready(function () {
           var $noteDesc = descSelector.val();
 
           if ($noteName && $noteDesc !== undefined) {
-            var note = new Note($noteName, $noteDesc, _this2.selectorLIst);
+            var note = new Note($noteName, $noteDesc, _this2.selectorList);
 
             _this2.addNote(note);
 
@@ -153,26 +158,46 @@ jQuery(document).ready(function () {
         var _this3 = this;
 
         btn.on("click", function (e) {
-          if (e.target.closest(".note")) alert(_this3.call(Note.name)); //let $viewNote = $(".viewNote");
-          //$viewNote.show(500);
+          var elem = e.target.closest(".note").getAttribute("data-index");
+          var $viewNote = $("\n                        <div class=\"viewNote noteWindow\">\n                            <div class=\"viewContainer\">\n                                <h3>".concat(_this3.notes[elem].name, "</h3>\n                                <div class=\"viewExitButton\">\n                                    <img src=\"images/exit.png\" alt=\"exit\">\n                                </div>\n                            </div>\n                            <p>\n                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum doloremque eius enim error excepturi\n                            </p>\n                        </div>\n                    "));
+          $viewNote.show(500);
         });
       }
     }, {
       key: "delNote",
       value: function delNote(btn) {
-        btn.on("click", function () {
-          alert("delete");
+        var _this4 = this;
+
+        btn.on("click", function (e) {
+          if (e.target.closest(".note")) {
+            _this4.removeNote(e.target.closest(".note").getAttribute("data-index"));
+          }
         });
       }
     }, {
       key: "updateView",
       value: function updateView() {
+        var _this5 = this;
+
+        this.selectorList.html("");
+        this.getAll().forEach(function (note, i) {
+          var noteElem = note.asElement();
+          noteElem.attr("data-index", i);
+
+          _this5.selectorList.append(noteElem);
+        });
         this.loadedLater();
+      }
+    }, {
+      key: "removeNote",
+      value: function removeNote(index) {
+        this.remove(index);
+        this.updateView();
       }
     }]);
 
     return NotesModule;
   }(Module);
 
-  var notes = new NotesModule(".notesList");
+  var notes = new NotesModule();
 });
