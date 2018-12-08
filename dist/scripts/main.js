@@ -99,8 +99,7 @@ jQuery(document).ready(function () {
     _createClass(NotesModule, [{
       key: "loadedLater",
       value: function loadedLater() {
-        this.viewNote($(".view"), $(".todo"));
-        this.viewNoteCancel();
+        this.viewNote($(".view"), $(".viewExitButton"), $(".viewNote"), $(".viewContainer"));
         this.delNote($(".delete"), $(".delNote"), $(".delOk"), $(".delNo"));
       }
     }, {
@@ -158,25 +157,33 @@ jQuery(document).ready(function () {
       }
     }, {
       key: "viewNote",
-      value: function viewNote(btn, selector) {
+      value: function viewNote(btn, btnExit, selector, selectorForName) {
         var _this3 = this;
 
+        var onOff = true;
         btn.on("click", function (e) {
-          var elem = e.target.closest(".note").getAttribute("data-index");
-          var $viewNote = $("\n                        <div class=\"viewNote noteWindow\">\n                            <div class=\"viewContainer\">\n                                <h3>".concat(_this3.notes[elem].name, "</h3>\n                                <div class=\"viewExitButton\">\n                                    <img src=\"images/exit.png\" alt=\"exit\">\n                                </div>\n                            </div>\n                            <p>").concat(_this3.notes[elem].description, "</p>\n                        </div>\n                    "));
-          selector.append($viewNote);
-          $viewNote.show(500);
-        });
-      }
-    }, {
-      key: "viewNoteCancel",
-      value: function viewNoteCancel() {
-        $(".viewExitButton").on("click", function (e) {
-          console.log("hello");
-          /*if (e.target.closest(".viewNote")){
-              console.log(e.target.closest(".viewNote"));
-              $(".viewNote").hide(500);
-          }*/
+          if (e.target.closest(".note")) {
+            var index = e.target.closest(".note").getAttribute("data-index");
+
+            if (onOff) {
+              var $name = $("<h3></h3>");
+              $name.text(_this3.notes[index].name);
+              $name.addClass(".forName"); ///////
+
+              selectorForName.prepend($name);
+              var $description = $("<p></p>");
+              $description.text(_this3.notes[index].description);
+              selector.append($description);
+              selector.show(500);
+              btnExit.on("click", function () {
+                $name.text("");
+                $description.text("");
+                selector.hide(500);
+                onOff = true;
+              });
+              onOff = false;
+            }
+          }
         });
       }
     }, {
@@ -186,11 +193,20 @@ jQuery(document).ready(function () {
 
         btn.on("click", function (e) {
           if (e.target.closest(".note")) {
-            selector.show(500);
-            btnYes.on("click", function () {
-              _this4.removeNote(e.target.closest(".note").getAttribute("data-index"));
+            var index = e.target.closest(".note").getAttribute("data-index");
+            selector.show(500); //need to fix button below
+            //example:
 
+            /*btn.on("click", (e) => {
+                if (e.target.closest(".note")) {
+                    this.removeNote(e.target.closest(".note").getAttribute("data-index"));
+                }
+            })*/
+
+            btnYes.on("click", function () {
               selector.hide(500);
+
+              _this4.removeNote(index);
             });
             btnNo.on("click", function () {
               selector.hide(500);

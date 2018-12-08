@@ -60,9 +60,8 @@ jQuery(document).ready(function () {
         }
 
         loadedLater() {
-            this.viewNote($(".view"), $(".todo"));
-            this.viewNoteCancel();
-            this.delNote($(".delete"),$(".delNote"),$(".delOk"),$(".delNo"));
+            this.viewNote($(".view"), $(".viewExitButton"), $(".viewNote"), $(".viewContainer"));
+            this.delNote($(".delete"), $(".delNote"), $(".delOk"), $(".delNo"));
         }
 
         init() {
@@ -103,46 +102,55 @@ jQuery(document).ready(function () {
             })
         }
 
-        viewNote(btn, selector) {
-            btn.on("click", (e) => {
-                let elem = e.target.closest(".note").getAttribute("data-index");
-                let $viewNote = $(`
-                        <div class="viewNote noteWindow">
-                            <div class="viewContainer">
-                                <h3>${this.notes[elem].name}</h3>
-                                <div class="viewExitButton">
-                                    <img src="images/exit.png" alt="exit">
-                                </div>
-                            </div>
-                            <p>${this.notes[elem].description}</p>
-                        </div>
-                    `);
-                selector.append($viewNote);
-                $viewNote.show(500);
-            })
-        }
-
-        viewNoteCancel() {
-            $(".viewExitButton").on("click", (e) => {
-                console.log("hello");
-                /*if (e.target.closest(".viewNote")){
-                    console.log(e.target.closest(".viewNote"));
-                    $(".viewNote").hide(500);
-                }*/
-            })
-        }
-
-        delNote(btn,selector,btnYes,btnNo) {
+        viewNote(btn, btnExit, selector, selectorForName) {
+            let onOff = true;
             btn.on("click", (e) => {
                 if (e.target.closest(".note")) {
+                    let index = e.target.closest(".note").getAttribute("data-index");
+
+                    if (onOff) {
+                        let $name = $("<h3></h3>");
+                        $name.text(this.notes[index].name);
+                        $name.addClass(".forName");///////
+                        selectorForName.prepend($name);
+
+                        let $description = $("<p></p>");
+                        $description.text(this.notes[index].description);
+                        selector.append($description);
+                        selector.show(500);
+
+                        btnExit.on("click", () => {
+                            $name.text("");
+                            $description.text("");
+
+                            selector.hide(500);
+                            onOff = true;
+                        });
+                        onOff = false;
+                    }
+                }
+            })
+        }
+
+        delNote(btn, selector, btnYes, btnNo) {
+            btn.on("click", (e) => {
+                if (e.target.closest(".note")) {
+                    let index = e.target.closest(".note").getAttribute("data-index");
                     selector.show(500);
+                    //need to fix button below
+                    //example:
+                    /*btn.on("click", (e) => {
+                        if (e.target.closest(".note")) {
+                            this.removeNote(e.target.closest(".note").getAttribute("data-index"));
+                        }
+                    })*/
                     btnYes.on("click", () => {
-                        this.removeNote(e.target.closest(".note").getAttribute("data-index"));
                         selector.hide(500);
+                        this.removeNote(index);
                     });
                     btnNo.on("click", () => {
                         selector.hide(500);
-                    })
+                    });
                 }
             })
         }
@@ -162,7 +170,6 @@ jQuery(document).ready(function () {
             this.updateView();
         }
     }
-
 
     let notes = new NotesModule();
 
