@@ -119,6 +119,7 @@ jQuery(document).ready(function () {
                         selector.show(500);
 
                         btnExit.on("click", () => {
+                            //need to fix <h3> and <p> elements below (stays after delete)
                             $name.text("");
                             $description.text("");
                             selector.hide(500);
@@ -135,7 +136,7 @@ jQuery(document).ready(function () {
                 if (e.target.closest(".note")) {
                     let index = e.target.closest(".note").getAttribute("data-index");
                     selector.show(500);
-                    //need to fix button below
+                    //need to fix button below (un correct delete)
                     //example:
                     /*btn.on("click", (e) => {
                         if (e.target.closest(".note")) {
