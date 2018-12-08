@@ -62,7 +62,7 @@ jQuery(document).ready(function () {
         loadedLater() {
             this.viewNote($(".view"), $(".todo"));
             this.viewNoteCancel();
-            this.delNote($(".delete"));
+            this.delNote($(".delete"),$(".delNote"),$(".delOk"),$(".delNo"));
         }
 
         init() {
@@ -132,10 +132,17 @@ jQuery(document).ready(function () {
             })
         }
 
-        delNote(btn) {
+        delNote(btn,selector,btnYes,btnNo) {
             btn.on("click", (e) => {
                 if (e.target.closest(".note")) {
-                    this.removeNote(e.target.closest(".note").getAttribute("data-index"));
+                    selector.show(500);
+                    btnYes.on("click", () => {
+                        this.removeNote(e.target.closest(".note").getAttribute("data-index"));
+                        selector.hide(500);
+                    });
+                    btnNo.on("click", () => {
+                        selector.hide(500);
+                    })
                 }
             })
         }

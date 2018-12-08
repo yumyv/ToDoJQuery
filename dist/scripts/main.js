@@ -101,7 +101,7 @@ jQuery(document).ready(function () {
       value: function loadedLater() {
         this.viewNote($(".view"), $(".todo"));
         this.viewNoteCancel();
-        this.delNote($(".delete"));
+        this.delNote($(".delete"), $(".delNote"), $(".delOk"), $(".delNo"));
       }
     }, {
       key: "init",
@@ -181,12 +181,20 @@ jQuery(document).ready(function () {
       }
     }, {
       key: "delNote",
-      value: function delNote(btn) {
+      value: function delNote(btn, selector, btnYes, btnNo) {
         var _this4 = this;
 
         btn.on("click", function (e) {
           if (e.target.closest(".note")) {
-            _this4.removeNote(e.target.closest(".note").getAttribute("data-index"));
+            selector.show(500);
+            btnYes.on("click", function () {
+              _this4.removeNote(e.target.closest(".note").getAttribute("data-index"));
+
+              selector.hide(500);
+            });
+            btnNo.on("click", function () {
+              selector.hide(500);
+            });
           }
         });
       }
