@@ -159,7 +159,9 @@ jQuery(document).ready(function () {
 
         btn.on("click", function (e) {
           var elem = e.target.closest(".note").getAttribute("data-index");
-          var $viewNote = $("\n                        <div class=\"viewNote noteWindow\">\n                            <div class=\"viewContainer\">\n                                <h3>".concat(_this3.notes[elem].name, "</h3>\n                                <div class=\"viewExitButton\">\n                                    <img src=\"images/exit.png\" alt=\"exit\">\n                                </div>\n                            </div>\n                            <p>\n                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum doloremque eius enim error excepturi\n                            </p>\n                        </div>\n                    "));
+          var $viewNote = $("\n                        <div class=\"viewNote noteWindow\">\n                            <div class=\"viewContainer\">\n                                <h3>".concat(_this3.notes[elem].name, "</h3>\n                                <div class=\"viewExitButton\">\n                                    <img src=\"images/exit.png\" alt=\"exit\">\n                                </div>\n                            </div>\n                            <p>").concat(_this3.notes[elem].description, "</p>\n                        </div>\n                    "));
+          var $todo = $(".todo");
+          $todo.append($viewNote);
           $viewNote.show(500);
         });
       }

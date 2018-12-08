@@ -114,11 +114,11 @@ jQuery(document).ready(function () {
                                     <img src="images/exit.png" alt="exit">
                                 </div>
                             </div>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum doloremque eius enim error excepturi
-                            </p>
+                            <p>${this.notes[elem].description}</p>
                         </div>
                     `);
+                    let $todo = $(".todo");
+                    $todo.append($viewNote);
                     $viewNote.show(500);
             })
         }
