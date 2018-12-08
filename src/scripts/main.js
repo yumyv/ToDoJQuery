@@ -60,41 +60,41 @@ jQuery(document).ready(function () {
         }
 
         loadedLater() {
-            this.viewNote($(".view"));
+            this.viewNote($(".view"), $(".todo"));
+            this.viewNoteCancel();
             this.delNote($(".delete"));
-
         }
 
         init() {
-            this.addButton(this.addNoteSelector, this.addBtnSelector);
-            this.addNoteOk(this.addNoteSelector, this.noteNameSelector, this.descSelector, this.addOkBtn);
-            this.addNoteCancel(this.addNoteSelector, this.noteNameSelector, this.descSelector, this.addCancelBtn);
+            this.addButton(this.addNoteSelector);
+            this.addNoteOk();
+            this.addNoteCancel(this.addNoteSelector, this.noteNameSelector, this.descSelector);
         }
 
-        addButton(selector, btn) {
-            btn.on("click", function () {
-                selector.show(500);
+        addButton(addNoteSelector) {
+            this.addBtnSelector.on("click", function () {
+                addNoteSelector.show(500);
             });
         }
 
-        addNoteOk(addNoteSelector, noteNameSelector, descSelector, btn) {
-            btn.on("click", () => {
-                let $noteName = noteNameSelector.val();
-                let $noteDesc = descSelector.val();
+        addNoteOk() {
+            this.addOkBtn.on("click", () => {
+                let $noteName = this.noteNameSelector.val();
+                let $noteDesc = this.descSelector.val();
                 if ($noteName && $noteDesc !== undefined) {
                     let note = new Note($noteName, $noteDesc, this.selectorList);
                     this.addNote(note);
                     note.asElement();
-                    noteNameSelector.val("");
-                    descSelector.val("");
+                    this.noteNameSelector.val("");
+                    this.descSelector.val("");
                     this.updateView();
                 }
-                addNoteSelector.hide(500);
+                this.addNoteSelector.hide(500);
             });
         }
 
-        addNoteCancel(addNoteSelector, noteNameSelector, descSelector, btn) {
-            btn.on("click", function () {
+        addNoteCancel(addNoteSelector, noteNameSelector, descSelector) {
+            this.addCancelBtn.on("click", function () {
                 if ((noteNameSelector.val() && descSelector.val()) !== undefined) {
                     noteNameSelector.val("");
                     descSelector.val("");
@@ -103,10 +103,10 @@ jQuery(document).ready(function () {
             })
         }
 
-        viewNote(btn) {
-            btn.on("click", (e) =>{
+        viewNote(btn, selector) {
+            btn.on("click", (e) => {
                 let elem = e.target.closest(".note").getAttribute("data-index");
-                    let $viewNote = $(`
+                let $viewNote = $(`
                         <div class="viewNote noteWindow">
                             <div class="viewContainer">
                                 <h3>${this.notes[elem].name}</h3>
@@ -117,21 +117,30 @@ jQuery(document).ready(function () {
                             <p>${this.notes[elem].description}</p>
                         </div>
                     `);
-                    let $todo = $(".todo");
-                    $todo.append($viewNote);
-                    $viewNote.show(500);
+                selector.append($viewNote);
+                $viewNote.show(500);
+            })
+        }
+
+        viewNoteCancel() {
+            $(".viewExitButton").on("click", (e) => {
+                console.log("hello");
+                /*if (e.target.closest(".viewNote")){
+                    console.log(e.target.closest(".viewNote"));
+                    $(".viewNote").hide(500);
+                }*/
             })
         }
 
         delNote(btn) {
-            btn.on("click", (e) =>{
-                if(e.target.closest(".note")) {
+            btn.on("click", (e) => {
+                if (e.target.closest(".note")) {
                     this.removeNote(e.target.closest(".note").getAttribute("data-index"));
                 }
             })
         }
 
-        updateView(){
+        updateView() {
             this.selectorList.html("");
             this.getAll().forEach((note, i) => {
                 let noteElem = note.asElement();

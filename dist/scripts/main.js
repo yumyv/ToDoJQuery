@@ -99,31 +99,33 @@ jQuery(document).ready(function () {
     _createClass(NotesModule, [{
       key: "loadedLater",
       value: function loadedLater() {
-        this.viewNote($(".view"));
+        this.viewNote($(".view"), $(".todo"));
+        this.viewNoteCancel();
         this.delNote($(".delete"));
       }
     }, {
       key: "init",
       value: function init() {
-        this.addButton(this.addNoteSelector, this.addBtnSelector);
-        this.addNoteOk(this.addNoteSelector, this.noteNameSelector, this.descSelector, this.addOkBtn);
-        this.addNoteCancel(this.addNoteSelector, this.noteNameSelector, this.descSelector, this.addCancelBtn);
+        this.addButton(this.addNoteSelector);
+        this.addNoteOk();
+        this.addNoteCancel(this.addNoteSelector, this.noteNameSelector, this.descSelector);
       }
     }, {
       key: "addButton",
-      value: function addButton(selector, btn) {
-        btn.on("click", function () {
-          selector.show(500);
+      value: function addButton(addNoteSelector) {
+        this.addBtnSelector.on("click", function () {
+          addNoteSelector.show(500);
         });
       }
     }, {
       key: "addNoteOk",
-      value: function addNoteOk(addNoteSelector, noteNameSelector, descSelector, btn) {
+      value: function addNoteOk() {
         var _this2 = this;
 
-        btn.on("click", function () {
-          var $noteName = noteNameSelector.val();
-          var $noteDesc = descSelector.val();
+        this.addOkBtn.on("click", function () {
+          var $noteName = _this2.noteNameSelector.val();
+
+          var $noteDesc = _this2.descSelector.val();
 
           if ($noteName && $noteDesc !== undefined) {
             var note = new Note($noteName, $noteDesc, _this2.selectorList);
@@ -131,19 +133,21 @@ jQuery(document).ready(function () {
             _this2.addNote(note);
 
             note.asElement();
-            noteNameSelector.val("");
-            descSelector.val("");
+
+            _this2.noteNameSelector.val("");
+
+            _this2.descSelector.val("");
 
             _this2.updateView();
           }
 
-          addNoteSelector.hide(500);
+          _this2.addNoteSelector.hide(500);
         });
       }
     }, {
       key: "addNoteCancel",
-      value: function addNoteCancel(addNoteSelector, noteNameSelector, descSelector, btn) {
-        btn.on("click", function () {
+      value: function addNoteCancel(addNoteSelector, noteNameSelector, descSelector) {
+        this.addCancelBtn.on("click", function () {
           if ((noteNameSelector.val() && descSelector.val()) !== undefined) {
             noteNameSelector.val("");
             descSelector.val("");
@@ -154,15 +158,25 @@ jQuery(document).ready(function () {
       }
     }, {
       key: "viewNote",
-      value: function viewNote(btn) {
+      value: function viewNote(btn, selector) {
         var _this3 = this;
 
         btn.on("click", function (e) {
           var elem = e.target.closest(".note").getAttribute("data-index");
           var $viewNote = $("\n                        <div class=\"viewNote noteWindow\">\n                            <div class=\"viewContainer\">\n                                <h3>".concat(_this3.notes[elem].name, "</h3>\n                                <div class=\"viewExitButton\">\n                                    <img src=\"images/exit.png\" alt=\"exit\">\n                                </div>\n                            </div>\n                            <p>").concat(_this3.notes[elem].description, "</p>\n                        </div>\n                    "));
-          var $todo = $(".todo");
-          $todo.append($viewNote);
+          selector.append($viewNote);
           $viewNote.show(500);
+        });
+      }
+    }, {
+      key: "viewNoteCancel",
+      value: function viewNoteCancel() {
+        $(".viewExitButton").on("click", function (e) {
+          console.log("hello");
+          /*if (e.target.closest(".viewNote")){
+              console.log(e.target.closest(".viewNote"));
+              $(".viewNote").hide(500);
+          }*/
         });
       }
     }, {
