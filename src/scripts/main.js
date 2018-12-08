@@ -111,7 +111,6 @@ jQuery(document).ready(function () {
                     if (onOff) {
                         let $name = $("<h3></h3>");
                         $name.text(this.notes[index].name);
-                        $name.addClass(".forName");///////
                         selectorForName.prepend($name);
 
                         let $description = $("<p></p>");
@@ -122,7 +121,6 @@ jQuery(document).ready(function () {
                         btnExit.on("click", () => {
                             $name.text("");
                             $description.text("");
-
                             selector.hide(500);
                             onOff = true;
                         });

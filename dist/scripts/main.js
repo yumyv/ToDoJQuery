@@ -168,8 +168,6 @@ jQuery(document).ready(function () {
             if (onOff) {
               var $name = $("<h3></h3>");
               $name.text(_this3.notes[index].name);
-              $name.addClass(".forName"); ///////
-
               selectorForName.prepend($name);
               var $description = $("<p></p>");
               $description.text(_this3.notes[index].description);
