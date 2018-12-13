@@ -134,22 +134,17 @@ jQuery(document).ready(function () {
         delNote(btn, selector, btnYes, btnNo) {
             btn.on("click", (e) => {
                 if (e.target.closest(".note")) {
-                    let index = e.target.closest(".note").getAttribute("data-index");
-                    selector.show(500);
+                    this.removeNote(e.target.closest(".note").getAttribute("data-index"));
                     //need to fix button below (un correct delete)
-                    //example:
-                    /*btn.on("click", (e) => {
-                        if (e.target.closest(".note")) {
-                            this.removeNote(e.target.closest(".note").getAttribute("data-index"));
-                        }
-                    })*/
+                    /*let index = e.target.closest(".note").getAttribute("data-index");
+                    selector.show(500);
                     btnYes.on("click", () => {
                         selector.hide(500);
                         this.removeNote(index);
                     });
                     btnNo.on("click", () => {
                         selector.hide(500);
-                    });
+                    });*/
                 }
             })
         }

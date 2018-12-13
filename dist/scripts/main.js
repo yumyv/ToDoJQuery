@@ -192,24 +192,18 @@ jQuery(document).ready(function () {
 
         btn.on("click", function (e) {
           if (e.target.closest(".note")) {
-            var index = e.target.closest(".note").getAttribute("data-index");
-            selector.show(500); //need to fix button below (un correct delete)
-            //example:
+            _this4.removeNote(e.target.closest(".note").getAttribute("data-index")); //need to fix button below (un correct delete)
 
-            /*btn.on("click", (e) => {
-                if (e.target.closest(".note")) {
-                    this.removeNote(e.target.closest(".note").getAttribute("data-index"));
-                }
-            })*/
-
-            btnYes.on("click", function () {
-              selector.hide(500);
-
-              _this4.removeNote(index);
+            /*let index = e.target.closest(".note").getAttribute("data-index");
+            selector.show(500);
+            btnYes.on("click", () => {
+                selector.hide(500);
+                this.removeNote(index);
             });
-            btnNo.on("click", function () {
-              selector.hide(500);
-            });
+            btnNo.on("click", () => {
+                selector.hide(500);
+            });*/
+
           }
         });
       }
